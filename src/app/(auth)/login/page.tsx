@@ -19,14 +19,19 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
-    console.warn("Login attempt with Firebase removed. Values:", values);
+    console.log("Simulating login with values:", values);
+    // Simulate an API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     toast({
-      title: "Login Unavailable",
-      description: "Firebase has been removed from this project. Login is not functional.",
-      variant: "destructive",
+      title: "Login Successful (Simulated)",
+      description: "You have been 'logged in'. Redirecting to homepage...",
     });
-    // Optionally, redirect or show a message
-    // router.push("/"); // Or keep them on the page
+    
+    // Redirect to home page after a short delay to allow toast to be seen
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
   };
 
   return (
@@ -35,7 +40,7 @@ export default function LoginPage() {
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your credentials to access your account. (Note: Firebase is currently removed)
+            Enter your credentials to access your account. (User data is not persisted)
           </CardDescription>
         </CardHeader>
         <CardContent>
