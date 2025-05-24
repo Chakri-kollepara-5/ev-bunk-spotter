@@ -4,7 +4,7 @@
 import type { EvBunk } from '@/lib/types';
 import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'; // Using next/image for optimized images
+// import Image from 'next/image'; // No longer needed if using img directly
 import { cn } from '@/lib/utils';
 
 interface MapViewProps {
@@ -62,13 +62,12 @@ export function MapView({
             title={bunk.name}
           >
             {/* Using an img tag directly as per the example for custom HTML markers */}
-            {/* Using a standard img tag as AdvancedMarker can render any HTML. next/image might have issues with direct rendering here depending on context. */}
             <img
               className="flag-icon"
               src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
               alt={`Marker for ${bunk.name}`}
-              width="32" // Example width, adjust as needed
-              height="32" // Example height, adjust as needed
+              width="32" 
+              height="32"
               style={{ cursor: 'pointer' }}
             />
           </AdvancedMarker>
@@ -77,3 +76,4 @@ export function MapView({
     </div>
   );
 }
+
