@@ -20,14 +20,19 @@ export default function RegisterPage() {
   const { toast } = useToast();
 
   const handleRegister = async (values: z.infer<typeof registerSchema>) => {
-    console.warn("Registration attempt with Firebase removed. Values:", values);
+    console.log("Simulating registration with values:", values);
+    // Simulate an API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     toast({
-      title: "Registration Unavailable",
-      description: "Firebase has been removed from this project. Registration is not functional.",
-      variant: "destructive",
+      title: "Registration Successful (Simulated)",
+      description: "You have been 'registered'. You can now try to 'login'.",
     });
-    // Optionally, redirect or show a message
-    // router.push("/"); // Or keep them on the page
+    
+    // Redirect to login page after a short delay to allow toast to be seen
+    setTimeout(() => {
+      router.push("/login");
+    }, 1500);
   };
 
   return (
@@ -36,7 +41,7 @@ export default function RegisterPage() {
         <CardHeader>
           <CardTitle className="text-2xl">Register</CardTitle>
           <CardDescription>
-            Create a new account to get started. (Note: Firebase is currently removed)
+            Create a new account to get started. (User data is not persisted)
           </CardDescription>
         </CardHeader>
         <CardContent>
