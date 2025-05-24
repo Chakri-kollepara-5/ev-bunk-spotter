@@ -1,11 +1,11 @@
+
 "use client";
 
-import { Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import type { EvBunk } from '@/lib/types';
 import { GOOGLE_MAPS_API_KEY } from '@/lib/config';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import Image from 'next/image'; // Using next/image for optimization if possible, else standard img
 
 interface MapViewProps {
   bunks?: EvBunk[];
@@ -15,6 +15,10 @@ interface MapViewProps {
   style?: React.CSSProperties;
   className?: string;
 }
+
+// This is the specific key the user provided and is the current fallback in config.
+// It's treated as a potentially non-functional/example key.
+const KNOWN_EXAMPLE_API_KEY = "AIzaSyD96t9iJssAKWlqNKev7LT1tioflNdIhPI";
 
 export function MapView({
   bunks = [],
@@ -32,7 +36,7 @@ export function MapView({
 
   const mapContainerStyle = style || { width: '100%', height: '400px' };
 
-  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "YOUR_GOOGLE_MAPS_API_KEY_HERE") {
+  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === KNOWN_EXAMPLE_API_KEY) {
     return (
       <div
         className={cn(
@@ -46,7 +50,8 @@ export function MapView({
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2 text-foreground">Map Not Available</h3>
           <p className="text-sm text-muted-foreground">
-            Google Maps API key is not configured. Please set NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in .env.local
+            A valid Google Maps API key is required. The current key is either missing or is a non-functional example.
+            Please set the <code className="bg-muted-foreground/20 px-1 py-0.5 rounded text-foreground">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> environment variable (e.g., in a .env.local file) with your valid key.
           </p>
         </div>
       </div>
