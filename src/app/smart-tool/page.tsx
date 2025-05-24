@@ -1,20 +1,21 @@
+
 "use client";
 
 import { useState } from 'react';
 import { SmartLocationForm } from '@/components/smart-tool/smart-location-form';
 import type { SmartLocationFormValues } from '@/components/smart-tool/smart-location-form';
 import { SmartLocationResults } from '@/components/smart-tool/smart-location-results';
-import type { AISuggestion } from '@/lib/types';
-import { recommendEvBunks, RecommendEvBunksInput } from '@/ai/flows/smart-location-tool';
+import type { AISuggestion, EvBunk } from '@/lib/types'; // Added EvBunk
+// Removed: import { recommendEvBunks, RecommendEvBunksInput } from '@/ai/flows/smart-location-tool';
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
-import { mockBunks } from '@/lib/mock-data'; // For placeholder images
+import { mockBunks } from '@/lib/mock-data'; // Using mock data
 
 export default function SmartToolPage() {
   const [recommendations, setRecommendations] = useState<AISuggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null); // Retained for potential future use or other error types
   const { toast } = useToast();
 
   const handleSubmit = async (values: SmartLocationFormValues) => {
@@ -22,35 +23,42 @@ export default function SmartToolPage() {
     setError(null);
     setRecommendations([]);
 
-    const input: RecommendEvBunksInput = {
-      userLocation: values.userLocation,
-      searchRadius: values.searchRadius,
-      numberOfRecommendations: values.numberOfRecommendations,
-    };
+    // Simulate a brief processing time if desired, or remove for instant results
+    await new Promise(resolve => setTimeout(resolve, 100)); 
 
     try {
-      // The AI flow might be a server action. Ensure it's set up correctly.
-      // If `recommendEvBunks` is not a server action, this client-side call will fail during build or runtime.
-      // For now, assuming `recommendEvBunks` from `ai/flows` is callable.
-      const result = await recommendEvBunks(input);
+      const numRecs = values.numberOfRecommendations;
       
-      // Add placeholder images to recommendations
-      const recommendationsWithImages = result.recommendations.map((rec, index) => ({
-        ...rec,
-        // Cycle through mock bunk images or use a generic placeholder
-        imageUrl: mockBunks[index % mockBunks.length]?.imageUrl || `https://placehold.co/600x400.png`, 
-      }));
+      // Get a subset of mockBunks.
+      // The form still has userLocation and searchRadius, but we'll ignore them for this local-only version.
+      // We'll just take the first N items based on numberOfRecommendations.
+      const localBunks: EvBunk[] = mockBunks.slice(0, numRecs);
 
-      setRecommendations(recommendationsWithImages);
-      if (recommendationsWithImages.length === 0) {
-        toast({ title: "No Results", description: "The AI couldn't find any recommendations based on your criteria." });
+      const mappedRecommendations: AISuggestion[] = localBunks.map((bunk) => {
+        const availableSlots = bunk.slots.filter(slot => slot.status === 'available').length;
+        return {
+          bunkName: bunk.name,
+          address: bunk.address,
+          availability: `${availableSlots} / ${bunk.slots.length} slots available`,
+          rating: bunk.rating,
+          popularity: bunk.popularity,
+          imageUrl: bunk.imageUrl || `https://placehold.co/600x400.png`,
+          // coordinates: bunk.coordinates, // Can be added if SmartLocationResults uses it
+        };
+      });
+
+      setRecommendations(mappedRecommendations);
+
+      if (mappedRecommendations.length === 0) {
+        toast({ title: "No Results", description: "No EV bunks found in the local data matching your request." });
       } else {
-        toast({ title: "Recommendations Found", description: `Found ${recommendationsWithImages.length} EV bunks for you.` });
+        toast({ title: "Recommendations Found", description: `Found ${mappedRecommendations.length} EV bunks from local data.` });
       }
     } catch (e: any) {
-      console.error("Error getting recommendations:", e);
-      setError(e.message || "Failed to fetch recommendations.");
-      toast({ title: "Error", description: e.message || "Failed to fetch recommendations.", variant: "destructive" });
+      // This catch block is less likely to be hit with local data, but kept for robustness
+      console.error("Error processing recommendations:", e);
+      setError(e.message || "Failed to process recommendations.");
+      toast({ title: "Error", description: e.message || "Failed to process recommendations.", variant: "destructive" });
     } finally {
       setIsLoading(false);
     }
@@ -61,7 +69,7 @@ export default function SmartToolPage() {
       <section>
         <h1 className="text-3xl font-bold text-primary mb-2">Smart Location Tool</h1>
         <p className="text-muted-foreground mb-6">
-          Let our AI find the best EV charging bunks for you based on popularity, availability, and ratings.
+          Find EV charging bunks based on your preferences from our local data.
         </p>
         <SmartLocationForm onSubmit={handleSubmit} isLoading={isLoading} />
       </section>
@@ -80,9 +88,11 @@ export default function SmartToolPage() {
          <SmartLocationResults recommendations={recommendations} />
       )}
       
-      {!isLoading && !error && recommendations.length === 0 && !error && (
-        // Initial state or no results found message handled by form/toast
-        <></>
+      {!isLoading && !error && recommendations.length === 0 && (
+        // Initial state or no results found message handled by toast
+        <div className="text-center mt-6 text-muted-foreground">
+          <p>Enter your criteria above and click "Get Recommendations" to see available EV bunks from our local list.</p>
+        </div>
       )}
     </div>
   );

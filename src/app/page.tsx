@@ -1,14 +1,13 @@
+
 import { MapView } from '@/components/map/map-view';
 import { BunkCard } from '@/components/bunk/bunk-card';
-import { mockBunks } from '@/lib/mock-data'; // Using mock data for now
+import { mockBunks } from '@/lib/mock-data'; // Using mock data
 import type { EvBunk } from '@/lib/types';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
 
-// In a real app, this would be fetched from a database/API
+// Data is sourced directly from mockBunks
 async function getBunks(): Promise<EvBunk[]> {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 500));
   return mockBunks;
 }
 

@@ -1,3 +1,4 @@
+
 import { BunkDetails } from '@/components/bunk/bunk-details';
 import { mockBunks } from '@/lib/mock-data';
 import type { EvBunk } from '@/lib/types';
@@ -11,9 +12,8 @@ interface BunkPageProps {
   params: { id: string };
 }
 
-// In a real app, this would fetch data for a specific bunk by ID
+// Data is sourced directly from mockBunks
 async function getBunkById(id: string): Promise<EvBunk | undefined> {
-  await new Promise(resolve => setTimeout(resolve, 300)); // Simulate API delay
   return mockBunks.find(bunk => bunk.id === id);
 }
 
