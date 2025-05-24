@@ -1,9 +1,11 @@
+
 "use client";
 
 import type { EvBunk } from '@/lib/types';
-import { Map, AdvancedMarker, Pin } from '@vis.gl/react-google-maps';
+import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { useRouter } from 'next/navigation';
-import { MapPinIcon } from 'lucide-react'; // Using MapPinIcon as a generic marker
+import Image from 'next/image'; // Using next/image for optimized images
+import { cn } from '@/lib/utils';
 
 interface MapViewProps {
   bunks: EvBunk[];
@@ -59,13 +61,16 @@ export function MapView({
             onClick={() => handleMarkerClick(bunk.id)}
             title={bunk.name}
           >
-            <Pin
-              background={selectedBunkId === bunk.id ? "var(--primary)" : "var(--accent)"}
-              borderColor={selectedBunkId === bunk.id ? "var(--accent-foreground)" : "var(--primary-foreground)"}
-              glyphColor={selectedBunkId === bunk.id ? "var(--primary-foreground)" : "var(--accent-foreground)"}
-            >
-              <MapPinIcon className="h-6 w-6" />
-            </Pin>
+            {/* Using an img tag directly as per the example for custom HTML markers */}
+            {/* Using a standard img tag as AdvancedMarker can render any HTML. next/image might have issues with direct rendering here depending on context. */}
+            <img
+              className="flag-icon"
+              src="https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png"
+              alt={`Marker for ${bunk.name}`}
+              width="32" // Example width, adjust as needed
+              height="32" // Example height, adjust as needed
+              style={{ cursor: 'pointer' }}
+            />
           </AdvancedMarker>
         ))}
       </Map>
