@@ -1,12 +1,21 @@
+
 "use client";
 
-import type { User } from 'firebase/auth';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+// Firebase has been removed. This is a stubbed AuthProvider.
+// No actual authentication will occur.
+
 import { useRouter } from 'next/navigation';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
+
+// Define a minimal User type if needed, or use `any` or `null`
+interface User {
+  // Minimal representation, Firebase User type is no longer available
+  email: string | null;
+  displayName?: string | null;
+  // Add other fields if your components expect them, but they will be null/undefined
+}
 
 interface AuthContextType {
   user: User | null;
@@ -18,27 +27,21 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // No Firebase, so not initially loading
   const router = useRouter();
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    // No Firebase, so no auth state listener needed.
+    // User will always be null unless manually set for testing non-Firebase auth.
+    setLoading(false);
+    console.warn("Firebase AuthProvider is stubbed. No real authentication will occur.");
   }, []);
 
   const signOutUser = async () => {
-    try {
-      await signOut(auth);
-      toast({ title: "Logged Out", description: "You have been successfully logged out." });
-      router.push('/'); // Redirect to home page after logout
-    } catch (error: any) {
-      console.error("Error signing out: ", error);
-      toast({ title: "Logout Error", description: error.message, variant: "destructive" });
-    }
+    setUser(null);
+    toast({ title: "Signed Out (Stub)", description: "User session cleared (Firebase removed)." });
+    router.push('/');
   };
 
   return (

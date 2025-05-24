@@ -1,10 +1,9 @@
+
 "use client";
 
 import { AuthForm } from "@/components/auth/auth-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { auth } from "@/lib/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -20,18 +19,14 @@ export default function LoginPage() {
   const { toast } = useToast();
 
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
-    try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
-      toast({ title: "Login Successful", description: "Welcome back!" });
-      router.push("/");
-    } catch (error: any) {
-      console.error("Login error:", error);
-      toast({
-        title: "Login Failed",
-        description: error.message || "An unknown error occurred.",
-        variant: "destructive",
-      });
-    }
+    console.warn("Login attempt with Firebase removed. Values:", values);
+    toast({
+      title: "Login Unavailable",
+      description: "Firebase has been removed from this project. Login is not functional.",
+      variant: "destructive",
+    });
+    // Optionally, redirect or show a message
+    // router.push("/"); // Or keep them on the page
   };
 
   return (
@@ -39,7 +34,9 @@ export default function LoginPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl">Login</CardTitle>
-          <CardDescription>Enter your credentials to access your account.</CardDescription>
+          <CardDescription>
+            Enter your credentials to access your account. (Note: Firebase is currently removed)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <AuthForm

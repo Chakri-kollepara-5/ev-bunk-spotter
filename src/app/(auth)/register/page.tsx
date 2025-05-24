@@ -1,10 +1,9 @@
+
 "use client";
 
 import { AuthForm } from "@/components/auth/auth-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { auth } from "@/lib/firebase";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -21,21 +20,14 @@ export default function RegisterPage() {
   const { toast } = useToast();
 
   const handleRegister = async (values: z.infer<typeof registerSchema>) => {
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, values.email, values.password);
-      if (userCredential.user) {
-        await updateProfile(userCredential.user, { displayName: values.name });
-      }
-      toast({ title: "Registration Successful", description: "Your account has been created." });
-      router.push("/");
-    } catch (error: any) {
-      console.error("Registration error:", error);
-      toast({
-        title: "Registration Failed",
-        description: error.message || "An unknown error occurred.",
-        variant: "destructive",
-      });
-    }
+    console.warn("Registration attempt with Firebase removed. Values:", values);
+    toast({
+      title: "Registration Unavailable",
+      description: "Firebase has been removed from this project. Registration is not functional.",
+      variant: "destructive",
+    });
+    // Optionally, redirect or show a message
+    // router.push("/"); // Or keep them on the page
   };
 
   return (
@@ -43,7 +35,9 @@ export default function RegisterPage() {
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader>
           <CardTitle className="text-2xl">Register</CardTitle>
-          <CardDescription>Create a new account to get started.</CardDescription>
+          <CardDescription>
+            Create a new account to get started. (Note: Firebase is currently removed)
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <AuthForm
