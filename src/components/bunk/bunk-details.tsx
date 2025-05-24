@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { EvBunk } from '@/lib/types';
@@ -36,7 +37,7 @@ export function BunkDetails({ bunk }: BunkDetailsProps) {
 
       <Card className="shadow-xl">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-primary">{bunk.name}</CardTitle>
+          <CardTitle className="text-2xl md:text-3xl font-bold text-primary">{bunk.name}</CardTitle>
         </CardHeader>
         <CardContent className="grid md:grid-cols-2 gap-8">
           <div className="space-y-4">
