@@ -110,10 +110,9 @@ body {
   }
 }
 
-/* Removed .flag-icon style as it's no longer used
 .flag-icon {
   position: relative;
-  left: -10px; 
-  bottom: 32px; 
+  left: -10px; /* Shift left to align flagpole base with anchor */
+  bottom: 32px; /* Shift up to align flagpole base with anchor */
+  /* You might need to fine-tune these values for your specific image and desired anchor point */
 }
-*/
