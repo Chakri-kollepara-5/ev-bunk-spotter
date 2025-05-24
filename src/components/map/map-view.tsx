@@ -16,9 +16,9 @@ interface MapViewProps {
   className?: string;
 }
 
-// This is the specific key the user provided and is the current fallback in config.
-// It's treated as a potentially non-functional/example key.
-const KNOWN_EXAMPLE_API_KEY = "AIzaSyD96t9iJssAKWlqNKev7LT1tioflNdIhPI";
+// This was the specific key the user provided and is a known example/test key.
+// We are removing the explicit check against this key, so the map will try to render with it.
+// const KNOWN_EXAMPLE_API_KEY = "AIzaSyD96t9iJssAKWlqNKev7LT1tioflNdIhPI"; 
 
 export function MapView({
   bunks = [],
@@ -36,7 +36,7 @@ export function MapView({
 
   const mapContainerStyle = style || { width: '100%', height: '400px' };
 
-  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === KNOWN_EXAMPLE_API_KEY) {
+  if (!GOOGLE_MAPS_API_KEY) {
     return (
       <div
         className={cn(
@@ -50,8 +50,8 @@ export function MapView({
         <div className="text-center">
           <h3 className="text-lg font-semibold mb-2 text-foreground">Map Not Available</h3>
           <p className="text-sm text-muted-foreground">
-            A valid Google Maps API key is required. The current key is either missing or is a non-functional example.
-            Please set the <code className="bg-muted-foreground/20 px-1 py-0.5 rounded text-foreground">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> environment variable (e.g., in a .env.local file) with your valid key.
+            A Google Maps API key is required but not configured. 
+            Please set the <code className="bg-muted-foreground/20 px-1 py-0.5 rounded text-foreground">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> environment variable (e.g., in a .env.local file) with your valid key, or ensure a fallback key is present in src/lib/config.ts.
           </p>
         </div>
       </div>
