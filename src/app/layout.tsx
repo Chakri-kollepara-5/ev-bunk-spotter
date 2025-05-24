@@ -4,7 +4,7 @@ import './globals.css';
 import { Header } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/hooks/use-auth';
-import { MapsApiProvider } from '@/components/layout/maps-api-provider'; // Updated import
+// import { MapsApiProvider } from '@/components/layout/maps-api-provider'; // Removed
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
-        <MapsApiProvider> {/* Use the new client component */}
+        {/* <MapsApiProvider> */} {/* Removed */}
           <AuthProvider>
             <Header />
             <main className="flex-grow container mx-auto px-4 py-8">
@@ -41,7 +41,7 @@ export default function RootLayout({
               © {new Date().getFullYear()} EV Bunk Spotter
             </footer> */}
           </AuthProvider>
-        </MapsApiProvider>
+        {/* </MapsApiProvider> */} {/* Removed */}
       </body>
     </html>
   );

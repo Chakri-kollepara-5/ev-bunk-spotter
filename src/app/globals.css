@@ -110,10 +110,10 @@ body {
   }
 }
 
-/* Shift the flag icon to the right so that the bottom of the flagpole
- * aligns with the anchor point. */
+/* Removed .flag-icon style as it's no longer used
 .flag-icon {
   position: relative;
-  left: -10px; /* Adjusted to align based on typical marker anchor points */
-  bottom: 32px; /* Adjust to make the bottom of the flag pole the anchor */
+  left: -10px; 
+  bottom: 32px; 
 }
+*/
