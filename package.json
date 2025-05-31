@@ -10,6 +10,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit"
+    "export": "next export"
+
   },
   "dependencies": {
     "@genkit-ai/googleai": "^1.8.0",
