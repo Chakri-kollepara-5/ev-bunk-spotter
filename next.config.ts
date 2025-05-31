@@ -1,7 +1,10 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',            // enable static export
+  basePath: '/ev-bunk-spotter', // your GitHub repo name
+  trailingSlash: true,         // helps with routing on GitHub Pages
+
   typescript: {
     ignoreBuildErrors: true,
   },
